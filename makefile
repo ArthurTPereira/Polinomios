@@ -9,7 +9,7 @@ OBJ=$(C_SOURCE:.c=.o)
 
 CC=gcc
 
-CC_FLAGS=-c -ansi -Wall -pedantic
+CC_FLAGS=-c
 
 
 all: $(PROJ_NAME)

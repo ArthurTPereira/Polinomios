@@ -3,21 +3,18 @@
 #include "polinomioD.h"
 #include "polinomioLI.h"
 
-#define TAM 3
-
 int main() {
 
-    Polinomio_D* vet[TAM];
-    double c,e;
-    for (int i = 0; i < TAM; i++) {
-        scanf("%lf %lf",&c,&e);
-        vet[i] = criaPolinomioD(c,e);
-    }
-    imprimePolinomioD(vet,TAM);
+    Polinomio_D* p1 = criaPolinomioD(3);
+    Polinomio_D* p2 = criaPolinomioD(3);
 
-    for (int j = 0; j < TAM; j++) {
-        free(vet[j]);
-    }
+    atribuiValoresD(p1,2,4);
+    atribuiValoresD(p2,2,8);
 
+    imprimePolinomioD(p1);
+    imprimePolinomioD(p2);
+
+    destroiPolinomioD(p1);
+    destroiPolinomioD(p2);
     return 0;
 }

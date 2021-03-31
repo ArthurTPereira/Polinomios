@@ -3,8 +3,24 @@
 
 typedef struct polinomio_ld Polinomio_ld;
 
-Polinomio_ld *criaPolinomioLI(long int c, long int e);
+Polinomio_ld *criaPolinomioLI(int tamanho);
 
 Polinomio_ld *copiaPolinomioLI(Polinomio_ld *poli);
+
+void atribuiPolinomioLI(Polinomio_ld *poli1, Polinomio_ld *poli2);
+
+void imprimePolinomioLI(Polinomio_ld* poli);
+
+void destroiPolinomioLI(Polinomio_ld* poli);
+
+int devolveGrauLI(Polinomio_ld* poli);
+
+void aumentaGrauLI(Polinomio_ld* poli, int aumento);
+
+void diminuiGrauLI(Polinomio_ld* poli, int aumento);
+
+int verificaZerosLI(Polinomio_ld* poli);
+
+int verificaIgualdadeLI(Polinomio_ld* poli1, Polinomio_ld* poli2);
 
 #endif
