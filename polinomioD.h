@@ -23,14 +23,6 @@ int verificaZerosD(Polinomio_D* poli);
 
 int verificaIgualdadeD(Polinomio_D* poli1, Polinomio_D* poli2);
 
-
-
-
-
-
-
-
-
 void imprimePolinomioD(Polinomio_D* poli);
 
 void destroiPolinomioD(Polinomio_D* poli);

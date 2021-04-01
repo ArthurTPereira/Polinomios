@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include "polinomioD.h"
 
 struct polinomio_D {
@@ -9,14 +10,32 @@ struct polinomio_D {
 
 Polinomio_D* criaPolinomioD(int tamanho) {
     Polinomio_D* poli = (Polinomio_D*) malloc(sizeof(Polinomio_D));
-    poli->coef = (double*) malloc(tamanho * sizeof(double));
+    if (poli == NULL) {
+        printf("Erro de alocação.\n");
+        return NULL;
+    }
+
+    poli->coef = (double*) malloc((tamanho + 1) * sizeof(double));
+    if (poli->coef == NULL) {
+        printf("Erro de alocação.\n");
+        return NULL;
+    }
+
     poli->grau = tamanho;
     return poli;
 }
 
 Polinomio_D* copiaPolinomioD(Polinomio_D* poli) {
     Polinomio_D* copia = (Polinomio_D*) malloc(sizeof(Polinomio_D));
+    if (poli == NULL) {
+        printf("Erro de alocação.\n");
+        return NULL;
+    }
     copia->coef = calloc(poli->grau,sizeof(double));
+    if (poli->coef == NULL) {
+        printf("Erro de alocação.\n");
+        return NULL;
+    }
     copia->grau = poli->grau;
     
     atribuiPolinomioD(copia,poli);
@@ -68,8 +87,6 @@ int verificaZerosD(Polinomio_D* poli) {
 int verificaIgualdadeD(Polinomio_D* poli1, Polinomio_D* poli2) {
     int count = 0;
     if (poli1->grau == poli2->grau) {
-
-
         for (int i = 0; i < poli1->grau; i++) {
             if (fabs(poli1->coef[i] - poli2->coef[i]) <= 0.0001) {
                 count++;

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include "polinomioLI.h"
 
 struct polinomio_ld {
@@ -9,18 +10,35 @@ struct polinomio_ld {
 
 Polinomio_ld *criaPolinomioLI(int tamanho) {
     Polinomio_ld *poli = (Polinomio_ld*)malloc(sizeof(Polinomio_ld));
-    poli->coef = calloc(tamanho+1, sizeof(long int));
-    poli->grau = tamanho;
+    if (poli == NULL) {
+        printf("Erro de alocação.\n");
+        return NULL;
+    }
 
+    poli->coef = (long int*) malloc((tamanho+1) * sizeof(long int));
+    if (poli->coef == NULL) {
+        printf("Erro de alocação.\n");
+        return NULL;
+    }
+
+    poli->grau = tamanho;
     return poli;
 }
 
 Polinomio_ld *copiaPolinomioLI(Polinomio_ld *poli) {
     Polinomio_ld *copia = (Polinomio_ld*)malloc(sizeof(Polinomio_ld));
+    if (poli == NULL) {
+        printf("Erro de alocação.\n");
+        return NULL;
+    }
     copia->coef = calloc(poli->grau, sizeof(long int));
+    if (poli->coef == NULL) {
+        printf("Erro de alocação.\n");
+        return NULL;
+    }
     copia->grau = poli->grau;
 
-    //funcao pra atribuir valor
+    atribuiPolinomioLI(copia,poli);
 
     return copia;
 }
@@ -36,13 +54,14 @@ void atribuiValoresLI(Polinomio_ld* poli, int n, int valor) {
 
 void imprimePolinomioLI(Polinomio_ld* poli) {
     for (int i = 0; i <= poli->grau; i++) {
-        printf("%lfx^%d",poli->coef[i],i);
+        printf("%ldx^%d",poli->coef[i],i);
         if (i < poli->grau) {
             if (poli->coef[i+1] >= 0) {
                 printf(" + ");
             }
         }
     }
+    printf("\n");
 }
 
 void destroiPolinomioLI(Polinomio_ld* poli) {
@@ -55,12 +74,12 @@ int devolveGrauLI(Polinomio_ld* poli){
 }
 
 void aumentaGrauLI(Polinomio_ld* poli, int aumento) {
-    poli = realloc(poli,poli->grau + aumento);
+    poli = (Polinomio_ld*) realloc(poli,poli->grau + aumento);
     poli->grau += aumento;
 }
 
 void diminuiGrauLI(Polinomio_ld* poli, int aumento) {
-    poli = realloc(poli,poli->grau - aumento);
+    poli = (Polinomio_ld*) realloc(poli,poli->grau - aumento);
     poli->grau -= aumento;
 }
 
@@ -88,7 +107,7 @@ int verificaIgualdadeLI(Polinomio_ld* poli1, Polinomio_ld* poli2) {
 
 
         for (int i = 0; i < poli1->grau; i++) {
-            if (fabs(poli1->coef[i] - poli2->coef[i]) <= 0.0001) {
+            if (abs(poli1->coef[i] - poli2->coef[i]) <= 0.0001) {
                 count++;
             }
         }
