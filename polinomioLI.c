@@ -44,8 +44,17 @@ Polinomio_ld *copiaPolinomioLI(Polinomio_ld *poli) {
 }
 
 void atribuiPolinomioLI(Polinomio_ld* poli1, Polinomio_ld* poli2) {
-    poli1->grau = poli2->grau;
-    poli1->coef = poli2->coef;
+    if (poli1->grau == poli2->grau) {
+        for (int i = 0; i < poli2->grau + 1; ++i) {
+            poli1->coef[i] = poli2->coef[i];
+        }
+    } else { //Medida de segurança para evitar atribuição de polinômios com tamanhos diferentes
+        poli1->grau = poli2->grau;
+        poli1->coef = (long int*) realloc(poli1->coef,(poli2->grau + 1) * sizeof(long int));
+        for (int i = 0; i < poli2->grau + 1; ++i) {
+            poli1->coef[i] = poli2->coef[i];
+        }
+    }
 }
 
 void atribuiValoresLI(Polinomio_ld* poli, int n, int valor) {
@@ -74,13 +83,25 @@ int devolveGrauLI(Polinomio_ld* poli){
 }
 
 void aumentaGrauLI(Polinomio_ld* poli, int aumento) {
-    poli = (Polinomio_ld*) realloc(poli,poli->grau + aumento);
+    int temp = poli->grau;
+    poli->coef = (long int*) realloc(poli->coef,(poli->grau + aumento + 1) * sizeof(long int));
     poli->grau += aumento;
+    for (int i = temp + 1; i <= poli->grau; ++i) {
+        poli->coef[i] = 0;
+    }
 }
 
-void diminuiGrauLI(Polinomio_ld* poli, int aumento) {
-    poli = (Polinomio_ld*) realloc(poli,poli->grau - aumento);
-    poli->grau -= aumento;
+void diminuiGrauLI(Polinomio_ld* poli, int diminui) {
+    poli->coef = (long int*) realloc(poli->coef,(poli->grau - diminui + 1) * sizeof(long int));
+    poli->grau -= diminui;
+    for (int i = poli->grau; i >= 0; --i) {
+        if (poli->coef[i] == 0) {
+            poli->coef = (long int*) realloc(poli->coef,(poli->grau) * sizeof(long int));
+            poli->grau -= 1;
+        } else {
+            break;
+        }
+    }
 }
 
 long int devolveCoeficienteLI(Polinomio_ld* poli, int posicao) {

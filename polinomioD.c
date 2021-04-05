@@ -44,8 +44,17 @@ Polinomio_D* copiaPolinomioD(Polinomio_D* poli) {
 }
 
 void atribuiPolinomioD(Polinomio_D* poli1, Polinomio_D* poli2) {
-    poli1->grau = poli2->grau;
-    poli1->coef = poli2->coef;
+    if (poli1->grau == poli2->grau) {
+        for (int i = 0; i < poli2->grau + 1; ++i) {
+            poli1->coef[i] = poli2->coef[i];
+        }
+    } else { //Medida de segurança para evitar atribuição de polinômios com tamanhos diferentes
+        poli1->grau = poli2->grau;
+        poli1->coef = (double*) realloc(poli1->coef,(poli2->grau + 1) * sizeof(double));
+        for (int i = 0; i < poli2->grau + 1; ++i) {
+            poli1->coef[i] = poli2->coef[i];
+        }
+    }
 }
 
 int devolveGrauD(Polinomio_D* poli) {
@@ -53,13 +62,25 @@ int devolveGrauD(Polinomio_D* poli) {
 }
 
 void aumentaGrauD(Polinomio_D* poli, int aumento) {
-    poli = (Polinomio_D*) realloc(poli,poli->grau + aumento);
+    int temp = poli->grau;
+    poli->coef = (double*) realloc(poli->coef,(poli->grau + aumento + 1) * sizeof(double));
     poli->grau += aumento;
+    for (int i = temp + 1; i <= poli->grau; ++i) {
+        poli->coef[i] = 0;
+    }
 }
 
 void diminuiGrauD(Polinomio_D* poli, int diminui) {
-    poli = (Polinomio_D*) realloc(poli,poli->grau - diminui);
+    poli->coef = (double*) realloc(poli->coef,(poli->grau - diminui + 1) * sizeof(double));
     poli->grau -= diminui;
+    for (int i = poli->grau; i >= 0; --i) {
+        if (poli->coef[i] == 0) {
+            poli->coef = (double*) realloc(poli->coef,(poli->grau) * sizeof(double));
+            poli->grau -= 1;
+        } else {
+            break;
+        }
+    }
 }
 
 double devolveCoeficienteD(Polinomio_D* poli, int posicao) {
